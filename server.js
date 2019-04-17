@@ -3,6 +3,10 @@ const path = require("path");
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+// Parse request body as JSON
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
     // Although this references the build folder... Use the public folder in client/public to publish images/css/any static file
@@ -12,12 +16,7 @@ if (process.env.NODE_ENV === "production") {
 
 // You really only need API routes and not any HTML routes if you are using REACTJS as the frontend
 // ******************************API ROUTES INCLUDED HERE***************************** //
-app.get("/_api/non-cached", (req, res) => {
-    res.json({ random: Math.random() });
-});
-app.get("/api/cached", (req, res) => {
-    res.json({ random: Math.random() });
-});
+require('./controllers/api-routes')(app);
 
 // Send every request to the React app
 // Define any API routes before this runs
